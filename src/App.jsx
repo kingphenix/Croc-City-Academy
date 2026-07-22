@@ -264,7 +264,7 @@ function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           {/* Logo */}
           <a href="#home" className="flex items-center gap-3 group focus:outline-none">
-            <img src={logo} className="h-10 w-auto object-contain" alt="Croc City Logo" />
+            <img src={logo} className="h-10 w-auto object-contain" alt="Croc City Logo" decoding="async" fetchPriority="high" />
             <span className="font-display text-2xl font-black tracking-tight uppercase">
               <span className="text-brand-orange">CROC</span><span className="text-brand-green">CITY</span>
             </span>
@@ -359,6 +359,8 @@ function App() {
               src={logo}
               className="w-32 h-32 md:w-36 md:h-36 object-contain drop-shadow-[0_0_30px_rgba(255,102,0,0.35)] transform hover:scale-105 transition-transform duration-300"
               alt="Croc City Crest Logo"
+              decoding="async"
+              fetchPriority="high"
             />
             <div className="flex items-center gap-3">
               <span className="h-[2px] w-8 bg-brand-orange" />
@@ -453,6 +455,9 @@ function App() {
                   src={photo.src}
                   alt={photo.caption}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  loading="lazy"
+                  decoding="async"
+                  fetchPriority="low"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
 
@@ -716,6 +721,9 @@ function App() {
                     src={facility.src}
                     alt=""
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    loading="lazy"
+                    decoding="async"
+                    fetchPriority="low"
                   />
                   <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-colors duration-500" />
                 </div>
@@ -876,6 +884,9 @@ function App() {
                       alt={`${leader.name} - ${leader.role}`}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                       style={leader.photoStyle || {}}
+                      loading="lazy"
+                      decoding="async"
+                      fetchPriority="low"
                     />
                   ) : (
                     <>
@@ -955,6 +966,9 @@ function App() {
                           src={staff.photo}
                           alt={staff.name}
                           className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          loading="lazy"
+                          decoding="async"
+                          fetchPriority="low"
                         />
                       ) : (
                         <div className={`absolute inset-0 flex items-center justify-center p-4 bg-gradient-to-br ${staff.gradient || 'from-brand-green-dark to-neutral-card'}`}>
@@ -1038,7 +1052,7 @@ function App() {
           {/* Col 1 */}
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <img src={logo} className="h-10 w-auto object-contain" alt="Croc City Crest Logo" />
+              <img src={logo} className="h-10 w-auto object-contain" alt="Croc City Crest Logo" loading="lazy" decoding="async" fetchPriority="low" />
               <span className="font-display text-xl font-black tracking-tight text-white uppercase">
                 CROC<span className="text-brand-green">CITY</span>
               </span>
