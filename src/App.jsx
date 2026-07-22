@@ -174,6 +174,36 @@ function App() {
   };
 
   useEffect(() => {
+    if (!(selectedLeader || selectedStaff || isRegModalOpen)) return;
+    const scrollY = window.scrollY;
+    const previousHtmlOverflow = document.documentElement.style.overflow;
+    const previousBodyOverflow = document.body.style.overflow;
+    const previousBodyPosition = document.body.style.position;
+    const previousBodyTop = document.body.style.top;
+    const previousBodyLeft = document.body.style.left;
+    const previousBodyRight = document.body.style.right;
+    const previousBodyWidth = document.body.style.width;
+
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+    document.body.style.width = '100%';
+    return () => {
+      document.documentElement.style.overflow = previousHtmlOverflow;
+      document.body.style.overflow = previousBodyOverflow;
+      document.body.style.position = previousBodyPosition;
+      document.body.style.top = previousBodyTop;
+      document.body.style.left = previousBodyLeft;
+      document.body.style.right = previousBodyRight;
+      document.body.style.width = previousBodyWidth;
+      window.scrollTo(0, scrollY);
+    };
+  }, [selectedLeader, selectedStaff, isRegModalOpen]);
+
+  useEffect(() => {
     // Initialize AOS
     AOS.init({
       duration: 800,
@@ -587,8 +617,13 @@ function App() {
       </section>
 
       {/* Programs Section */}
-      <section id="programs" className="py-24 bg-neutral-card/50 relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="programs" className="py-24 relative overflow-hidden">
+        <div
+          className="absolute inset-0 bg-cover bg-center pointer-events-none z-0"
+          style={{ backgroundImage: `url(${newCar2})` }}
+        />
+        <div className="absolute inset-0 bg-neutral-dark/80 pointer-events-none z-0" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
           {/* Header */}
           <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
@@ -1213,7 +1248,7 @@ function App() {
       {/* Leadership Detail Modal */}
       {selectedLeader && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/85 backdrop-blur-md transition-opacity duration-300 overflow-y-auto"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/85 backdrop-blur-md transition-opacity duration-300 overflow-hidden"
           onClick={() => setSelectedLeader(null)}
         >
           <div
@@ -1229,7 +1264,7 @@ function App() {
             </button>
 
             {/* Left Image / Slot */}
-            <div className="md:w-1/2 aspect-[4/5] md:aspect-auto relative bg-neutral-dark flex items-center justify-center min-h-[320px]">
+            <div className="w-full md:w-1/2 relative bg-neutral-dark flex items-center justify-center h-[38vh] min-h-[260px] md:h-auto md:min-h-0">
               {selectedLeader.photo ? (
                 <img
                   src={selectedLeader.photo}
@@ -1255,16 +1290,16 @@ function App() {
             </div>
 
             {/* Right Content / Bio */}
-            <div className="md:w-1/2 p-6 sm:p-10 flex flex-col justify-between overflow-y-auto space-y-6">
-              <div className="space-y-3">
-                <div className="hidden md:block">
+            <div className="flex-1 md:flex-none md:w-1/2 p-6 sm:p-10 flex flex-col justify-between overflow-y-auto overscroll-contain gap-6">
+              <div className="hidden md:block space-y-3">
+                <div>
                   <h3 className="font-display text-3xl sm:text-4xl font-black text-white uppercase tracking-tight">{selectedLeader.role}</h3>
                   {selectedLeader.name && <p className="text-brand-orange font-bold uppercase tracking-wider text-sm mt-1">{selectedLeader.name}</p>}
                 </div>
                 <div className="w-16 h-1 bg-brand-green rounded-full" />
               </div>
 
-              <div className="space-y-4 text-white/80 leading-relaxed text-sm sm:text-base flex-1 overflow-y-auto pr-2">
+              <div className="space-y-4 text-white/80 leading-relaxed text-sm sm:text-base flex-1">
                 {selectedLeader.fullBio?.split('\n\n').map((paragraph, idx) => (
                   <p key={idx}>{paragraph}</p>
                 ))}
