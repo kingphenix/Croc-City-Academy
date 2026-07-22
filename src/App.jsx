@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import {
   Menu, X, Trophy, Activity, Target, Shield, Users,
   MapPin, Calendar, ArrowUpRight, Mail, Phone, Award,
-  Clock, ArrowRight, CheckCircle2, ChevronRight, Star,
+  Clock, ArrowRight, CheckCircle2, ChevronLeft, ChevronRight, Star,
   Bell, Dumbbell, Play, Clipboard, UserCheck, Building2
 } from 'lucide-react';
 import gsap from 'gsap';
@@ -15,7 +15,7 @@ import carousel1 from './assets/carousel_1.JPG';
 import carousel2 from './assets/carousel_2.JPG';
 import carousel3 from './assets/carousel_3.jpg';
 import carousel4 from './assets/carousel_4.JPG';
-import carousel5 from './assets/carousel_5.jpeg';
+import carousel5 from './assets/carousel_5.jpg';
 import carousel6 from './assets/carousel_6.JPG';
 import carousel7 from './assets/carousel_7.JPG';
 import carousel8 from './assets/carousel_8.JPG';
@@ -154,17 +154,24 @@ function App() {
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterSubscribed, setNewsletterSubscribed] = useState(false);
   const [isPlayingVideo, setIsPlayingVideo] = useState(false);
-  const [clickedCarousel, setClickedCarousel] = useState(null);
   const [selectedStaff, setSelectedStaff] = useState(null);
   const [selectedLeader, setSelectedLeader] = useState(null);
   const [isAboutCarouselPaused, setIsAboutCarouselPaused] = useState(false);
-  const [isFacilitiesCarouselPaused, setIsFacilitiesCarouselPaused] = useState(false);
 
   // GSAP animation references
   const heroTitleRef = useRef(null);
   const heroSubtitleRef = useRef(null);
   const heroCtaRef = useRef(null);
   const heroBadgeRef = useRef(null);
+  const facilitiesGalleryRef = useRef(null);
+  const staffGalleryRef = useRef(null);
+
+  const scrollGallery = (ref, direction) => {
+    const el = ref.current;
+    if (!el) return;
+    const scrollAmount = Math.max(240, Math.round(el.clientWidth * 0.8));
+    el.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+  };
 
   useEffect(() => {
     // Initialize AOS
@@ -682,13 +689,29 @@ function App() {
             </p>
           </div>
 
-          {/* Facilities Carousel — Infinite CSS Scroll Belt */}
-          <div className="relative overflow-hidden" data-aos="fade-up">
-            <div
-              className={`carousel-belt flex gap-5 cursor-pointer ${isFacilitiesCarouselPaused ? 'carousel-paused' : ''}`}
-              onClick={() => setIsFacilitiesCarouselPaused(!isFacilitiesCarouselPaused)}
+          <div className="relative" data-aos="fade-up">
+            <button
+              type="button"
+              onClick={() => scrollGallery(facilitiesGalleryRef, -1)}
+              className="absolute left-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/60 hover:bg-black/75 border border-white/10 flex items-center justify-center text-white transition-colors"
+              aria-label="Scroll facilities left"
             >
-              {[...[
+              <ChevronLeft size={18} />
+            </button>
+            <button
+              type="button"
+              onClick={() => scrollGallery(facilitiesGalleryRef, 1)}
+              className="absolute right-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/60 hover:bg-black/75 border border-white/10 flex items-center justify-center text-white transition-colors"
+              aria-label="Scroll facilities right"
+            >
+              <ChevronRight size={18} />
+            </button>
+
+            <div
+              ref={facilitiesGalleryRef}
+              className="flex gap-4 overflow-x-auto scroll-smooth py-2 pr-2 pl-2"
+            >
+              {[
                 { src: facility0 },
                 { src: facility1 },
                 { src: facility2 },
@@ -700,22 +723,10 @@ function App() {
                 { src: newFac1 },
                 { src: newFac2 },
                 { src: newFac3 },
-              ], ...[
-                { src: facility0 },
-                { src: facility1 },
-                { src: facility2 },
-                { src: facility4 },
-                { src: facility5 },
-                { src: facility6 },
-                { src: facility7 },
-                { src: facility8 },
-                { src: newFac1 },
-                { src: newFac2 },
-                { src: newFac3 },
-              ]].map((facility, i) => (
+              ].map((facility, i) => (
                 <div
                   key={i}
-                  className="carousel-item flex-shrink-0 relative rounded-2xl overflow-hidden border border-white/10 group"
+                  className="w-[280px] sm:w-[360px] md:w-[420px] aspect-[4/3] flex-shrink-0 relative rounded-2xl overflow-hidden border border-white/10 group"
                 >
                   <img
                     src={facility.src}
@@ -735,7 +746,11 @@ function App() {
       </section>
 
       <section id="structure" className="py-24 bg-neutral-card/50 relative overflow-hidden">
-        <div className="absolute inset-0 sport-grid-pattern opacity-60 pointer-events-none" />
+        <div
+          className="absolute inset-0 bg-cover bg-center pointer-events-none"
+          style={{ backgroundImage: `url(${teamCelebrative})` }}
+        />
+        <div className="absolute inset-0 bg-neutral-dark/75 pointer-events-none" />
         <div className="absolute -top-24 -right-24 w-80 h-80 bg-brand-green/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute -bottom-24 -left-24 w-80 h-80 bg-brand-orange/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -948,17 +963,33 @@ function App() {
               </h3>
             </div>
 
-            <div className="relative overflow-hidden" data-aos="fade-up">
-              {/* Scrolling belt — original + clone for seamless loop */}
-              <div className={`carousel-belt-staff flex gap-5 py-4 ${clickedCarousel === 'key' ? 'carousel-paused' : ''}`}>
-                {[...keyStaff, ...keyStaff].map((staff, i) => (
+            <div className="relative" data-aos="fade-up">
+              <button
+                type="button"
+                onClick={() => scrollGallery(staffGalleryRef, -1)}
+                className="absolute left-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/60 hover:bg-black/75 border border-white/10 flex items-center justify-center text-white transition-colors"
+                aria-label="Scroll staff left"
+              >
+                <ChevronLeft size={18} />
+              </button>
+              <button
+                type="button"
+                onClick={() => scrollGallery(staffGalleryRef, 1)}
+                className="absolute right-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/60 hover:bg-black/75 border border-white/10 flex items-center justify-center text-white transition-colors"
+                aria-label="Scroll staff right"
+              >
+                <ChevronRight size={18} />
+              </button>
+
+              <div
+                ref={staffGalleryRef}
+                className="flex gap-4 overflow-x-auto scroll-smooth py-2 pr-2 pl-2"
+              >
+                {keyStaff.map((staff, i) => (
                   <div
                     key={i}
-                    onClick={() => {
-                      setClickedCarousel('key');
-                      setSelectedStaff(staff);
-                    }}
-                    className="w-[300px] flex-shrink-0 glass-card rounded-2xl overflow-hidden group cursor-pointer"
+                    onClick={() => setSelectedStaff(staff)}
+                    className="w-[260px] sm:w-[300px] flex-shrink-0 glass-card rounded-2xl overflow-hidden group cursor-pointer"
                   >
                     <div className="aspect-[4/5] bg-neutral-card flex flex-col justify-end p-6 relative overflow-hidden">
                       {staff.photo ? (
@@ -1073,11 +1104,6 @@ function App() {
                   <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
                 </svg>
               </a>
-              <a href="#" className="text-white/40 hover:text-brand-orange transition-colors" aria-label="Twitter">
-                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                </svg>
-              </a>
               <a href="https://www.youtube.com/@CrocCityFootballAcademy" target="_blank" rel="noreferrer" className="text-white/40 hover:text-brand-orange transition-colors" aria-label="YouTube">
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M23.498 6.163a3.003 3.003 0 0 0-2.11-2.11C19.518 3.545 12 3.545 12 3.545s-7.518 0-9.388.507a3.003 3.003 0 0 0-2.11 2.11C0 8.033 0 12 0 12s0 3.967.502 5.837a3.003 3.003 0 0 0 2.11 2.11c1.87.507 9.388.507 9.388.507s7.518 0 9.388-.507a3.003 3.003 0 0 0 2.11-2.11C24 15.967 24 12 24 12s0-3.967-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
@@ -1146,14 +1172,12 @@ function App() {
       {selectedStaff && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm" onClick={() => {
           setSelectedStaff(null);
-          setClickedCarousel(null);
         }}>
           <div className="bg-neutral-card border border-white/10 rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl relative" onClick={(e) => e.stopPropagation()}>
             <button
               className="absolute top-4 right-4 z-20 bg-black/50 hover:bg-brand-orange text-white rounded-full p-2 transition-colors"
               onClick={() => {
                 setSelectedStaff(null);
-                setClickedCarousel(null);
               }}
             >
               <X size={20} />
