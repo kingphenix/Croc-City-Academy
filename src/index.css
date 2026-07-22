@@ -5,14 +5,14 @@
 @theme {
   --font-sans: 'Outfit', sans-serif;
   --font-display: 'Space Grotesk', sans-serif;
-  
+
   --color-brand-green: #6AA018;
   --color-brand-green-light: #82C41E;
   --color-brand-green-dark: #4E7A12;
   --color-brand-orange: #F7941D;
   --color-brand-orange-light: #F9A93D;
   --color-brand-orange-dark: #D97D0F;
-  
+
   --color-neutral-dark: #0A0F1A;
   --color-neutral-card: #111827;
   --color-neutral-card-light: #1F2937;
@@ -23,15 +23,18 @@
 ::-webkit-scrollbar {
   width: 8px;
 }
+
 ::-webkit-scrollbar-track {
   background: #111827;
 }
+
 ::-webkit-scrollbar-thumb {
-  background: #6AA018;
+  background: #1F2937;
   border-radius: 4px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
-  background: #F7941D;
+  background: #374151;
 }
 
 html {
@@ -84,17 +87,20 @@ html {
 
 .sport-grid-pattern {
   background-size: 40px 40px;
-  background-image: 
+  background-image:
     linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
 }
 
 /* Custom animations */
 @keyframes pulse-slow {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 0.2;
     transform: scale(1);
   }
+
   50% {
     opacity: 0.4;
     transform: scale(1.05);
@@ -106,8 +112,13 @@ html {
 }
 
 @keyframes carouselScroll {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 .carousel-belt {
@@ -116,7 +127,38 @@ html {
   will-change: transform;
 }
 
+.carousel-belt.carousel-paused,
+.carousel-belt-staff.carousel-paused,
+.carousel-belt-staff-reverse.carousel-paused {
+  animation-play-state: paused;
+}
 
+@keyframes carouselScrollReverse {
+  0% {
+    transform: translateX(-50%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.carousel-belt-staff {
+  width: max-content;
+  animation: carouselScroll 35s linear infinite;
+  will-change: transform;
+}
+
+.carousel-belt-staff-reverse {
+  width: max-content;
+  animation: carouselScrollReverse 35s linear infinite;
+  will-change: transform;
+}
+
+.carousel-belt-staff.carousel-paused,
+.carousel-belt-staff-reverse.carousel-paused {
+  animation-play-state: paused;
+}
 
 .carousel-item {
   width: 420px;

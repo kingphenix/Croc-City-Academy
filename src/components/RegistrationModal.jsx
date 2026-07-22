@@ -17,6 +17,8 @@ export default function RegistrationModal({ isOpen, onClose }) {
   });
   
   const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
 
   useEffect(() => {
     if (isOpen) {
@@ -33,6 +35,8 @@ export default function RegistrationModal({ isOpen, onClose }) {
         notes: ''
       });
       setErrors({});
+      setIsSubmitting(false);
+      setSubmitError(null);
     } else {
       document.body.style.overflow = 'unset';
     }
@@ -75,9 +79,50 @@ export default function RegistrationModal({ isOpen, onClose }) {
     setStep(step - 1);
   };
 
-  const handleSubmit = (e) => {
+  const calculateAge = (dobString) => {
+    if (!dobString) return '';
+    const today = new Date();
+    const birthDate = new Date(dobString);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return `${age} years (DOB: ${dobString})`;
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validateStep(2)) {
+    if (!validateStep(2)) return;
+
+    setIsSubmitting(true);
+    setSubmitError(null);
+
+    const payload = {
+      fullName: formData.fullName,
+      email: formData.email,
+      phone: formData.phone,
+      childAge: calculateAge(formData.dob),
+      programInterest: `Position: ${formData.position}, Experience: ${formData.experience}`,
+      parentName: formData.parentName,
+      notes: formData.notes,
+    };
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Registration failed. Please try again.');
+      }
+
       setStep(3);
       // Trigger premium confetti splash
       const duration = 3 * 1000;
@@ -106,6 +151,11 @@ export default function RegistrationModal({ isOpen, onClose }) {
           colors: ['#FF6600', '#0A5C36', '#FFFFFF']
         }));
       }, 250);
+    } catch (err) {
+      console.error('Submission error:', err);
+      setSubmitError(err.message || 'Something went wrong. Please check your connection and try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -122,7 +172,7 @@ export default function RegistrationModal({ isOpen, onClose }) {
       {/* Backdrop */}
       <div 
         className="absolute inset-0 bg-neutral-dark/85 backdrop-blur-md" 
-        onClick={onClose}
+        onClick={isSubmitting ? null : onClose}
       />
       
       {/* Modal Container */}
@@ -131,7 +181,8 @@ export default function RegistrationModal({ isOpen, onClose }) {
         {/* Close Button */}
         <button 
           onClick={onClose}
-          className="absolute top-4 right-4 text-white/50 hover:text-brand-orange transition-colors duration-200"
+          disabled={isSubmitting}
+          className="absolute top-4 right-4 text-white/50 hover:text-brand-orange transition-colors duration-200 disabled:opacity-30 disabled:cursor-not-allowed"
           aria-label="Close Registration Modal"
         >
           <X size={24} />
@@ -260,8 +311,9 @@ export default function RegistrationModal({ isOpen, onClose }) {
                   name="parentName"
                   value={formData.parentName}
                   onChange={handleChange}
+                  disabled={isSubmitting}
                   placeholder="e.g. John Adebayo"
-                  className="w-full bg-neutral-dark border border-white/10 rounded-lg py-3 pl-10 pr-4 text-white placeholder-white/30 focus:outline-none focus:border-brand-orange transition-colors"
+                  className="w-full bg-neutral-dark border border-white/10 rounded-lg py-3 pl-10 pr-4 text-white placeholder-white/30 focus:outline-none focus:border-brand-orange transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 />
               </div>
               {errors.parentName && <p className="text-red-500 text-xs mt-1">{errors.parentName}</p>}
@@ -276,8 +328,9 @@ export default function RegistrationModal({ isOpen, onClose }) {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
+                  disabled={isSubmitting}
                   placeholder="parent@example.com"
-                  className="w-full bg-neutral-dark border border-white/10 rounded-lg py-3 pl-10 pr-4 text-white placeholder-white/30 focus:outline-none focus:border-brand-orange transition-colors"
+                  className="w-full bg-neutral-dark border border-white/10 rounded-lg py-3 pl-10 pr-4 text-white placeholder-white/30 focus:outline-none focus:border-brand-orange transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 />
               </div>
               {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
@@ -292,8 +345,9 @@ export default function RegistrationModal({ isOpen, onClose }) {
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
+                  disabled={isSubmitting}
                   placeholder="+234 800 123 4567"
-                  className="w-full bg-neutral-dark border border-white/10 rounded-lg py-3 pl-10 pr-4 text-white placeholder-white/30 focus:outline-none focus:border-brand-orange transition-colors"
+                  className="w-full bg-neutral-dark border border-white/10 rounded-lg py-3 pl-10 pr-4 text-white placeholder-white/30 focus:outline-none focus:border-brand-orange transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 />
               </div>
               {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
@@ -305,24 +359,45 @@ export default function RegistrationModal({ isOpen, onClose }) {
                 name="notes"
                 value={formData.notes}
                 onChange={handleChange}
+                disabled={isSubmitting}
                 placeholder="Any dietary restrictions, medical conditions or football history we should know..."
-                className="w-full bg-neutral-dark border border-white/10 rounded-lg p-3 h-20 text-white placeholder-white/30 focus:outline-none focus:border-brand-orange transition-colors resize-none"
+                className="w-full bg-neutral-dark border border-white/10 rounded-lg p-3 h-20 text-white placeholder-white/30 focus:outline-none focus:border-brand-orange transition-colors resize-none disabled:opacity-50 disabled:cursor-not-allowed"
               />
             </div>
+
+            {submitError && (
+              <p className="text-red-500 text-xs bg-red-500/10 border border-red-500/20 rounded-lg p-3 text-center">
+                {submitError}
+              </p>
+            )}
 
             <div className="grid grid-cols-3 gap-3 pt-4">
               <button 
                 type="button"
                 onClick={handlePrev}
-                className="col-span-1 border border-white/10 hover:border-white/20 text-white font-semibold py-3 px-2 rounded-lg transition-colors cursor-pointer"
+                disabled={isSubmitting}
+                className="col-span-1 border border-white/10 hover:border-white/20 text-white font-semibold py-3 px-2 rounded-lg transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Back
               </button>
               <button 
                 type="submit"
-                className="col-span-2 bg-gradient-to-r from-brand-green to-brand-green-light hover:brightness-110 text-white font-semibold py-3 px-4 rounded-lg flex justify-center items-center gap-2 cursor-pointer transition-all duration-200"
+                disabled={isSubmitting}
+                className="col-span-2 bg-gradient-to-r from-brand-green to-brand-green-light hover:brightness-110 text-white font-semibold py-3 px-4 rounded-lg flex justify-center items-center gap-2 cursor-pointer transition-all duration-200 disabled:opacity-75 disabled:cursor-not-allowed disabled:hover:brightness-100"
               >
-                Register Athlete <CheckCircle2 size={18} />
+                {isSubmitting ? (
+                  <>
+                    <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Registering...
+                  </>
+                ) : (
+                  <>
+                    Register Athlete <CheckCircle2 size={18} />
+                  </>
+                )}
               </button>
             </div>
           </form>
