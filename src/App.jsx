@@ -1236,7 +1236,7 @@ function App() {
                   </span>
                 </div>
               )}
-              <div className="absolute inset-0 bg-gradient-to-t from-neutral-card via-neutral-card/30 to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-neutral-card via-neutral-card/0 to-transparent pointer-events-none" />
               <div className="absolute bottom-6 left-6 right-6 z-20 md:hidden">
                 <h3 className="font-display text-3xl font-black text-white uppercase drop-shadow-md">{selectedLeader.role}</h3>
                 {selectedLeader.name && <p className="text-brand-orange font-bold uppercase tracking-wider text-sm">{selectedLeader.name}</p>}
