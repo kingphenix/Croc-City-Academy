@@ -151,8 +151,7 @@ function App() {
   const [isRegModalOpen, setIsRegModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('u15');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [newsletterEmail, setNewsletterEmail] = useState('');
-  const [newsletterSubscribed, setNewsletterSubscribed] = useState(false);
+
   const [isPlayingVideo, setIsPlayingVideo] = useState(false);
   const [selectedStaff, setSelectedStaff] = useState(null);
   const [selectedLeader, setSelectedLeader] = useState(null);
@@ -175,31 +174,14 @@ function App() {
 
   useEffect(() => {
     if (!(selectedLeader || selectedStaff || isRegModalOpen)) return;
-    const scrollY = window.scrollY;
     const previousHtmlOverflow = document.documentElement.style.overflow;
     const previousBodyOverflow = document.body.style.overflow;
-    const previousBodyPosition = document.body.style.position;
-    const previousBodyTop = document.body.style.top;
-    const previousBodyLeft = document.body.style.left;
-    const previousBodyRight = document.body.style.right;
-    const previousBodyWidth = document.body.style.width;
 
     document.documentElement.style.overflow = 'hidden';
     document.body.style.overflow = 'hidden';
-    document.body.style.position = 'fixed';
-    document.body.style.top = `-${scrollY}px`;
-    document.body.style.left = '0';
-    document.body.style.right = '0';
-    document.body.style.width = '100%';
     return () => {
       document.documentElement.style.overflow = previousHtmlOverflow;
       document.body.style.overflow = previousBodyOverflow;
-      document.body.style.position = previousBodyPosition;
-      document.body.style.top = previousBodyTop;
-      document.body.style.left = previousBodyLeft;
-      document.body.style.right = previousBodyRight;
-      document.body.style.width = previousBodyWidth;
-      window.scrollTo(0, scrollY);
     };
   }, [selectedLeader, selectedStaff, isRegModalOpen]);
 
@@ -242,14 +224,7 @@ function App() {
     return () => ctx.revert();
   }, []);
 
-  const handleNewsletterSubmit = (e) => {
-    e.preventDefault();
-    if (newsletterEmail.trim()) {
-      setNewsletterSubscribed(true);
-      setNewsletterEmail('');
-      setTimeout(() => setNewsletterSubscribed(false), 5000);
-    }
-  };
+
 
   const programsData = {
     u15: {
@@ -744,7 +719,7 @@ function App() {
 
             <div
               ref={facilitiesGalleryRef}
-              className="flex gap-4 overflow-x-auto scroll-smooth py-2 pr-2 pl-2"
+              className="flex gap-4 overflow-x-auto scroll-smooth py-2 pr-2 pl-2 md:[&::-webkit-scrollbar]:hidden md:[-ms-overflow-style:none] md:[scrollbar-width:none]"
             >
               {[
                 { src: facility0 },
@@ -761,7 +736,7 @@ function App() {
               ].map((facility, i) => (
                 <div
                   key={i}
-                  className="w-[280px] sm:w-[360px] md:w-[420px] aspect-[4/3] flex-shrink-0 relative rounded-2xl overflow-hidden border border-white/10 group"
+                  className="w-[85vw] sm:w-[360px] md:w-[420px] aspect-[4/3] flex-shrink-0 relative rounded-2xl overflow-hidden border border-white/10 group"
                 >
                   <img
                     src={facility.src}
@@ -1018,13 +993,13 @@ function App() {
 
               <div
                 ref={staffGalleryRef}
-                className="flex gap-4 overflow-x-auto scroll-smooth py-2 pr-2 pl-2"
+                className="flex gap-4 overflow-x-auto scroll-smooth py-2 pr-2 pl-2 md:[&::-webkit-scrollbar]:hidden md:[-ms-overflow-style:none] md:[scrollbar-width:none]"
               >
                 {keyStaff.map((staff, i) => (
                   <div
                     key={i}
                     onClick={() => setSelectedStaff(staff)}
-                    className="w-[260px] sm:w-[300px] flex-shrink-0 glass-card rounded-2xl overflow-hidden group cursor-pointer"
+                    className="w-[80vw] sm:w-[300px] flex-shrink-0 glass-card rounded-2xl overflow-hidden group cursor-pointer"
                   >
                     <div className="aspect-[4/5] bg-neutral-card flex flex-col justify-end p-6 relative overflow-hidden">
                       {staff.photo ? (
@@ -1086,28 +1061,7 @@ function App() {
             </a>
           </div>
 
-          <div className="max-w-md mx-auto pt-10 border-t border-white/15">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-white/50 mb-3">Subscribe to Scouting Updates</h4>
-            <form onSubmit={handleNewsletterSubmit} className="flex gap-2">
-              <input
-                type="email"
-                required
-                value={newsletterEmail}
-                onChange={(e) => setNewsletterEmail(e.target.value)}
-                placeholder="Enter parent or player email"
-                className="flex-grow bg-neutral-dark border border-white/10 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:border-brand-green"
-              />
-              <button
-                type="submit"
-                className="bg-brand-green hover:bg-brand-green-light text-white px-5 py-2 rounded-lg text-sm font-semibold transition-colors cursor-pointer"
-              >
-                {newsletterSubscribed ? "Subscribed!" : "Join Squad"}
-              </button>
-            </form>
-            {newsletterSubscribed && (
-              <p className="text-brand-green-light text-xs mt-2 text-left">✓ Subscription successful! We'll alert you about upcoming academy fixtures and scouting events.</p>
-            )}
-          </div>
+
         </div>
       </section>
 
