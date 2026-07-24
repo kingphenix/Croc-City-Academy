@@ -8,22 +8,26 @@ import {
 import gsap from 'gsap';
 import AOS from 'aos';
 import RegistrationModal from './components/RegistrationModal';
-import heroAction from './assets/hero_action.png';
+import heroAction from './assets/hero_action.jpg';
 import teamCelebrative from './assets/team_celebrative.png';
 import logo from './assets/logo.png';
-import carousel1 from './assets/carousel_1.JPG';
-import carousel2 from './assets/carousel_2.JPG';
+import carousel1 from './assets/carousel_1.jpg';
+import carousel2 from './assets/carousel_2.jpg';
 import carousel3 from './assets/carousel_3.jpg';
-import carousel4 from './assets/carousel_4.JPG';
+import carousel4 from './assets/carousel_4.jpg';
 import carousel5 from './assets/carousel_5.jpg';
-import carousel6 from './assets/carousel_6.JPG';
-import carousel7 from './assets/carousel_7.JPG';
-import carousel8 from './assets/carousel_8.JPG';
-import carousel9 from './assets/carousel_9.JPG';
-import carousel10 from './assets/carousel_10.JPG';
+import carousel6 from './assets/carousel_6.jpg';
+import carousel7 from './assets/carousel_7.jpg';
+import carousel8 from './assets/carousel_8.jpg';
+import carousel9 from './assets/carousel_9.jpg';
+import carousel10 from './assets/carousel_10.jpg';
 import newCar1 from './assets/New_Caro1.jpg';
 import newCar2 from './assets/New_Caro2.jpg';
 import newCar3 from './assets/New_Caro3.jpg';
+import grad1 from './assets/grad1.jpg';
+import grad2 from './assets/grad2.jpg';
+import grad3 from './assets/grad3.jpg';
+import grad4 from './assets/grad4.jpg';
 import facility0 from './assets/facility_0.jpg';
 import facility1 from './assets/facility_1.jpg';
 import facility2 from './assets/facility_2.jpg';
@@ -38,6 +42,8 @@ import newFac3 from './assets/New_Fac3.jpg';
 import missionVideo from './assets/video/compressed.mp4';
 
 // Key Staff photo imports
+import staffNomzy from './assets/images/Nomzy Magaji (Operations Manager).jpg';
+import staffYakubu from './assets/images/Yakubu Mohammed (Director of Logistics).jpg';
 import staffCephas from './assets/images/Cephas Kafarma Josheph (Head Coach U17) (1).jpg';
 import staffDavid from './assets/images/David Amanyi (General Manager).jpg';
 import staffGabrielle from './assets/images/Gabrielle Obaje (Head Coach U15).jpg';
@@ -51,18 +57,25 @@ import leaderPresident from './assets/images/President.jpeg';
 
 const keyStaff = [
   {
+    name: "Nomzy Magaji",
+    role: "Operations Manager",
+    license: "Operations",
+    photo: staffNomzy,
+    badgeColor: "bg-brand-green"
+  },
+  {
+    name: "Yakubu Mohammed",
+    role: "Director of Logistics",
+    license: "Logistics",
+    photo: staffYakubu,
+    badgeColor: "bg-brand-orange"
+  },
+  {
     name: "Cephas Kafarma Josheph",
     role: "Head Coach U17",
     license: "CAF B License",
     photo: staffCephas,
     badgeColor: "bg-brand-orange"
-  },
-  {
-    name: "David Amanyi",
-    role: "General Manager",
-    license: "Executive",
-    photo: staffDavid,
-    badgeColor: "bg-brand-green"
   },
   {
     name: "Gabrielle Obaje",
@@ -80,7 +93,7 @@ const keyStaff = [
   },
   {
     name: "Mercy Vihiga Stephen",
-    role: "PM U15",
+    role: "Project Manager U15",
     license: "Operations",
     photo: staffMercy,
     badgeColor: "bg-brand-orange"
@@ -93,15 +106,8 @@ const keyStaff = [
     badgeColor: "bg-brand-green"
   },
   {
-    name: "Samuel Aruwa Joshua",
-    role: "DOA",
-    license: "Management",
-    photo: staffSamuel,
-    badgeColor: "bg-brand-orange"
-  },
-  {
     name: "W.O Idris Abdulkarim (RTD)",
-    role: "CSO",
+    role: "Chief Security Officer",
     license: "Safety",
     photo: staffIdris,
     badgeColor: "bg-brand-green"
@@ -109,18 +115,6 @@ const keyStaff = [
 ];
 
 const leadershipData = [
-  {
-    id: 'president',
-    role: 'The President',
-    name: 'Umar Babawo Wushishi',
-    photo: leaderPresident,
-    icon: 'userCheck',
-    badgeColor: 'brand-orange',
-    bio: "Umar Babawo Wushishi is the Founder and President of Croc City Football Academy, providing the strategic leadership and vision that drive the Academy's growth and long-term development. With a deep passion for youth empowerment and football development, he established the Academy with the goal of creating a world-class institution where talented young footballers can develop their abilities, build character, and access opportunities to excel both on and off the pitch.",
-    fullBio: `Umar Babawo Wushishi is the Founder and President of Croc City Football Academy, providing the strategic leadership and vision that drive the Academy's growth and long-term development. With a deep passion for youth empowerment and football development, he established the Academy with the goal of creating a world-class institution where talented young footballers can develop their abilities, build character, and access opportunities to excel both on and off the pitch.
-
-As President, he provides overall leadership for the Academy, overseeing its strategic direction, governance, institutional development, partnerships, and major investment initiatives. He works closely with Management to ensure that the Academy operates with professionalism, accountability, and excellence while maintaining the highest standards in player welfare, technical development, and organizational management.`
-  },
   {
     id: 'chairman',
     role: 'The Chairman',
@@ -132,6 +126,32 @@ As President, he provides overall leadership for the Academy, overseeing its str
     fullBio: `As the Chairman of Croc City Football Academy, he is dedicated to transforming grassroots football in Kaduna state. Alongside his brother, the Academy’s president, he leads the organisation with a shared vision to discover, nurture and elevate local talent to global standards. His leadership focuses on building strategic international partnerships, improving training facilities and ensuring a highly professional environment for young athletes. He firmly believes in holistic youth development, combining elite athletic excellence with character mentorship.
 
 His inspiration comes from a deep-rooted passion for football since he was little and the desire to create a pathway for young talent in Kaduna state and Nigeria as a whole. He saw the potential in our communities and knowing how sports can change the lives of these players, this became his driving force to set up the academy. Croc city aims to build a professional, supportive environment where the players can thrive on and off the pitch.`
+  },
+  {
+    id: 'president',
+    role: 'President',
+    name: 'Umar Babawo Wushishi',
+    photo: leaderPresident,
+    icon: 'userCheck',
+    badgeColor: 'brand-orange',
+    bio: "Umar Babawo Wushishi is the Founder and President of Croc City Football Academy, providing the strategic leadership and vision that drive the Academy's growth and long-term development. With a deep passion for youth empowerment and football development, he established the Academy with the goal of creating a world-class institution where talented young footballers can develop their abilities, build character, and access opportunities to excel both on and off the pitch.",
+    fullBio: `Umar Babawo Wushishi is the Founder and President of Croc City Football Academy, providing the strategic leadership and vision that drive the Academy's growth and long-term development. With a deep passion for youth empowerment and football development, he established the Academy with the goal of creating a world-class institution where talented young footballers can develop their abilities, build character, and access opportunities to excel both on and off the pitch.
+
+As President, he provides overall leadership for the Academy, overseeing its strategic direction, governance, institutional development, partnerships, and major investment initiatives. He works closely with Management to ensure that the Academy operates with professionalism, accountability, and excellence while maintaining the highest standards in player welfare, technical development, and organizational management.`
+  },
+  {
+    id: 'doa',
+    role: 'Director of Administration',
+    name: 'Samuel Aruwa Joshua',
+    photo: staffSamuel,
+    icon: 'Clipboard',
+    badgeColor: 'brand-green',
+    bio: "Samuel is an administrator, strategist, and organizational development professional who serves as the Director of Administration of Croc City Football Academy. He is responsible for overseeing the Academy's administrative operations, policy implementation, staff management, documentation systems, regulatory compliance, and institutional development initiatives.",
+    fullBio: `Samuel is an administrator, strategist, and organizational development professional who serves as the Director of Administration of Croc City Football Academy. He is responsible for overseeing the Academy's administrative operations, policy implementation, staff management, documentation systems, regulatory compliance, and institutional development initiatives. He coordinates communication across departments, ensures adherence to organizational procedures, and provides administrative leadership that supports the Academy's day-to-day operations and long-term growth.
+
+As one of the key drivers behind the Academy's organizational structure, Samuel has played a significant role in developing administrative frameworks, operational policies, staff systems, and strategic plans aimed at transforming Croc City Football Academy into a professionally managed football development institution. He is passionate about building sustainable systems, promoting accountability, and creating an environment where staff and players can thrive.
+
+With a strong interest in youth development, organizational leadership, and sports administration, he remains committed to ensuring that the Academy maintains the highest standards of professionalism while fulfilling its mission of developing future football stars and responsible young leaders.`
   },
   {
     id: 'gm',
@@ -149,7 +169,7 @@ His extensive understanding of the football ecosystem, combined with his passion
 
 function App() {
   const [isRegModalOpen, setIsRegModalOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState('u15');
+  const [activeTab, setActiveTab] = useState('school');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const [isPlayingVideo, setIsPlayingVideo] = useState(false);
@@ -227,6 +247,21 @@ function App() {
 
 
   const programsData = {
+    school: {
+      title: "Croc City Football Academy School",
+      age: "Boys & Girls Ages 4 - 15",
+      focus: "Foundational Football & Academic Excellence",
+      description: "The Croc City Football Academy School is our foundation programme designed to introduce boys and girls between the ages of 4 and 15 to the beautiful game in a safe, exciting, and professionally structured environment. More than just football training, this programme focuses on developing confident, disciplined, and well-rounded young individuals through age-appropriate coaching that combines technical football education with character building, teamwork, leadership, and healthy living.",
+      frequency: "Daily Academic Classes + 3x Weekly Football Training",
+      features: [
+        "Professional coaching for boys and girls aged 4–15 years",
+        "Age-specific training groups and player development plans",
+        "Technical, tactical, physical, and psychological development",
+        "Fun-filled learning environment with structured coaching sessions",
+        "Character building, discipline, teamwork, and leadership development",
+        "Pathway into Croc City Football Academy's elite development programmes"
+      ]
+    },
     u15: {
       title: "Under-15",
       age: "Ages 13 - 15",
@@ -434,11 +469,15 @@ function App() {
           >
             {[...[
               { src: carousel1, caption: 'Academy Training' },
+              { src: grad1, caption: 'Graduation' },
               { src: carousel3, caption: 'Match Day' },
+              { src: grad2, caption: 'Achievement' },
               { src: carousel4, caption: 'Skill Development' },
               { src: carousel5, caption: 'Team Bonding' },
+              { src: grad3, caption: 'Milestone' },
               { src: carousel6, caption: 'Tactical Drills' },
               { src: carousel7, caption: 'Warm-Up Drills' },
+              { src: grad4, caption: 'Success' },
               { src: carousel8, caption: 'Game Action' },
               { src: carousel9, caption: 'Celebration' },
               { src: carousel10, caption: 'Academy Life' },
@@ -447,11 +486,15 @@ function App() {
               { src: newCar3 },
             ], ...[
               { src: carousel1, caption: 'Academy Training' },
+              { src: grad1, caption: 'Graduation' },
               { src: carousel3, caption: 'Match Day' },
+              { src: grad2, caption: 'Achievement' },
               { src: carousel4, caption: 'Skill Development' },
               { src: carousel5, caption: 'Team Bonding' },
+              { src: grad3, caption: 'Milestone' },
               { src: carousel6, caption: 'Tactical Drills' },
               { src: carousel7, caption: 'Warm-Up Drills' },
+              { src: grad4, caption: 'Success' },
               { src: carousel8, caption: 'Game Action' },
               { src: carousel9, caption: 'Celebration' },
               { src: carousel10, caption: 'Academy Life' },
@@ -620,6 +663,7 @@ function App() {
                   : "bg-white/5 hover:bg-white/10 text-white/70 hover:text-white border border-white/5"
                   }`}
               >
+                {key === 'school' && "CCFA School"}
                 {key === 'u15' && "Under-15"}
                 {key === 'u17' && "Under-17"}
                 {key === 'u19' && "Under-19"}
@@ -778,7 +822,7 @@ function App() {
               <div className="p-7 space-y-5">
                 <div className="flex items-start justify-between gap-4">
                   <div>
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-brand-green-light">Ages 6–15</p>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-brand-green-light">Ages 4–15</p>
                     <h3 className="font-display text-xl font-extrabold text-white uppercase mt-1">Grassroots Program</h3>
                   </div>
                   <div className="w-12 h-12 rounded-xl bg-brand-green/15 border border-brand-green/25 flex items-center justify-center shrink-0">
@@ -892,8 +936,8 @@ function App() {
             </p>
           </div>
 
-          {/* 3 Profiles: President, Chairman, General Manager */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* 4 Profiles */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
             {leadershipData.map((leader, index) => (
               <div
                 key={leader.id}
@@ -916,23 +960,23 @@ function App() {
                   ) : (
                     <>
                       <div className={`absolute inset-0 bg-gradient-to-br ${leader.badgeColor === 'brand-orange' ? 'from-brand-orange-dark/30' : 'from-brand-green-dark/30'} via-neutral-card to-neutral-dark`} />
-                      <div className="relative z-10 flex flex-col items-center gap-3 p-6 text-center">
-                        <div className={`w-24 h-24 rounded-full ${leader.badgeColor === 'brand-orange' ? 'bg-brand-orange/20 border-brand-orange/40 text-brand-orange' : 'bg-brand-green/20 border-brand-green/40 text-brand-green'} border-2 flex items-center justify-center shadow-xl group-hover:scale-105 transition-transform duration-300`}>
-                          {leader.icon === 'userCheck' ? <UserCheck size={48} /> : <Building2 size={48} />}
+                      <div className="relative z-10 flex flex-col items-center gap-2 p-4 text-center">
+                        <div className={`w-16 h-16 sm:w-20 sm:h-20 rounded-full ${leader.badgeColor === 'brand-orange' ? 'bg-brand-orange/20 border-brand-orange/40 text-brand-orange' : 'bg-brand-green/20 border-brand-green/40 text-brand-green'} border-2 flex items-center justify-center shadow-xl group-hover:scale-105 transition-transform duration-300`}>
+                          {leader.icon === 'userCheck' ? <UserCheck size={32} /> : leader.icon === 'Clipboard' ? <Clipboard size={32} /> : <Building2 size={32} />}
                         </div>
-                        <span className={`text-xs font-bold uppercase tracking-widest ${leader.badgeColor === 'brand-orange' ? 'bg-brand-orange/20 text-brand-orange border-brand-orange/30' : 'bg-brand-green/20 text-brand-green border-brand-green/30'} px-3 py-1 rounded-full border`}>
+                        <span className={`text-[10px] font-bold uppercase tracking-widest ${leader.badgeColor === 'brand-orange' ? 'bg-brand-orange/20 text-brand-orange border-brand-orange/30' : 'bg-brand-green/20 text-brand-green border-brand-green/30'} px-2 py-0.5 rounded-full border`}>
                           Photo Slot
                         </span>
                       </div>
                     </>
                   )}
                   <div className="absolute inset-0 bg-gradient-to-t from-neutral-dark via-neutral-dark/30 to-transparent z-10" />
-                  <div className="absolute bottom-4 left-6 right-6 z-20">
-                    <h3 className="font-display text-2xl font-black text-white uppercase">{leader.role}</h3>
-                    {leader.name && <p className="text-xs text-white/80 font-semibold">{leader.name}</p>}
+                  <div className="absolute bottom-3 left-4 right-4 z-20">
+                    <h3 className="font-display text-lg sm:text-xl font-black text-white uppercase leading-tight">{leader.role}</h3>
+                    {leader.name && <p className="text-[11px] sm:text-xs text-white/80 font-semibold mt-0.5">{leader.name}</p>}
                   </div>
                 </div>
-                <div className="p-6 flex-1 flex flex-col space-y-4">
+                <div className="p-4 sm:p-5 flex-1 flex flex-col space-y-3">
                   <p className="text-xs text-white/70 leading-relaxed flex-1">
                     {leader.bio}
                   </p>
@@ -1105,6 +1149,7 @@ function App() {
           <div className="space-y-3">
             <h5 className="text-xs font-bold uppercase tracking-wider text-white">Programs</h5>
             <ul className="space-y-2 text-xs text-white/60">
+              <li><a href="#programs" onClick={() => setActiveTab('school')} className="hover:text-brand-orange transition-colors">CCFA School</a></li>
               <li><a href="#programs" onClick={() => setActiveTab('u15')} className="hover:text-brand-orange transition-colors">Under-15</a></li>
               <li><a href="#programs" onClick={() => setActiveTab('u17')} className="hover:text-brand-orange transition-colors">Under-17</a></li>
               <li><a href="#programs" onClick={() => setActiveTab('u19')} className="hover:text-brand-orange transition-colors">Under-19</a></li>
@@ -1229,7 +1274,7 @@ function App() {
               ) : (
                 <div className={`w-full h-full flex flex-col items-center justify-center p-8 bg-gradient-to-br ${selectedLeader.badgeColor === 'brand-orange' ? 'from-brand-orange-dark/30' : 'from-brand-green-dark/30'} via-neutral-card to-neutral-dark`}>
                   <div className={`w-32 h-32 rounded-full ${selectedLeader.badgeColor === 'brand-orange' ? 'bg-brand-orange/20 border-brand-orange/40 text-brand-orange' : 'bg-brand-green/20 border-brand-green/40 text-brand-green'} border-2 flex items-center justify-center shadow-2xl mb-4`}>
-                    {selectedLeader.icon === 'userCheck' ? <UserCheck size={64} /> : <Building2 size={64} />}
+                    {selectedLeader.icon === 'userCheck' ? <UserCheck size={64} /> : selectedLeader.icon === 'Clipboard' ? <Clipboard size={64} /> : <Building2 size={64} />}
                   </div>
                   <span className={`text-xs font-bold uppercase tracking-widest ${selectedLeader.badgeColor === 'brand-orange' ? 'bg-brand-orange/20 text-brand-orange border-brand-orange/30' : 'bg-brand-green/20 text-brand-green border-brand-green/30'} px-4 py-1.5 rounded-full border`}>
                     Photo Slot
