@@ -591,7 +591,10 @@ function App() {
                       src={missionVideo}
                       controls
                       autoPlay
-                      className="w-full h-full object-cover"
+                      playsInline
+                      preload="metadata"
+                      poster={carousel2}
+                      className="w-full h-full object-cover bg-black"
                       onEnded={() => setIsPlayingVideo(false)}
                     />
                   </div>
