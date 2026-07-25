@@ -252,7 +252,7 @@ function App() {
       age: "Boys & Girls Ages 4 - 15",
       focus: "Foundational Football & Academic Excellence",
       description: "The Croc City Football Academy School is our foundation programme designed to introduce boys and girls between the ages of 4 and 15 to the beautiful game in a safe, exciting, and professionally structured environment. More than just football training, this programme focuses on developing confident, disciplined, and well-rounded young individuals through age-appropriate coaching that combines technical football education with character building, teamwork, leadership, and healthy living.",
-      frequency: "Daily Academic Classes + 3x Weekly Football Training",
+      frequency: "Daily Academic Classes + 6x Weekly Training Sessions Mon - Sat",
       features: [
         "Professional coaching for boys and girls aged 4–15 years",
         "Age-specific training groups and player development plans",
@@ -267,7 +267,7 @@ function App() {
       age: "Ages 13 - 15",
       focus: "Positional Play & Tactical Understanding",
       description: "Transitioning athletes from recreation to competition. We build on core technical skills and introduce positional dynamics, team structures, video analysis, and advanced fitness routines.",
-      frequency: "4x Weekly Sessions + League Matches",
+      frequency: "5x Weekly Sessions + 1x Competitive Match",
       features: [
         "Positional roles and responsibilities",
         "High-pressing and possession systems",
