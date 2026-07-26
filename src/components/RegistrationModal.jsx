@@ -111,8 +111,18 @@ export default function RegistrationModal({ isOpen, onClose }) {
         }),
       });
 
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || 'Registration failed. Please try again.');
+      // Safely parse JSON — Vercel can return HTML error pages on infrastructure
+      // failures (cold-start crash, missing env var, etc.) which makes a bare
+      // response.json() throw a SyntaxError before we can read the real error.
+      let data = {};
+      const contentType = response.headers.get('content-type') || '';
+      if (contentType.includes('application/json')) {
+        try { data = await response.json(); } catch { /* ignore parse error */ }
+      }
+
+      if (!response.ok) {
+        throw new Error(data.error || `Server error (${response.status}). Please try again.`);
+      }
 
       // ── Success ──
       setStep(2);
