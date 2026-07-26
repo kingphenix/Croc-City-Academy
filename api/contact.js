@@ -1,9 +1,11 @@
 /**
  * Vercel Serverless Function — POST /api/contact
  *
- * Receives registration form data, validates & sanitizes it,
+ * Receives registration enquiry form data, validates & sanitizes it,
  * then sends a branded email to the academy inbox via Resend
  * and a confirmation email back to the applicant.
+ *
+ * Fields: name, phone, email, childAge, homeAddress
  */
 
 import { Resend } from 'resend';
@@ -34,7 +36,7 @@ function sanitize(str) {
   return String(str).replace(/<[^>]*>/g, '').trim();
 }
 
-/** Basic email regex. */
+/** Basic email regex validation. */
 function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
@@ -74,21 +76,21 @@ export default async function handler(req, res) {
     }
 
     // ── Extract & sanitize ──────────────────────────────────────────────
-    const fullName       = sanitize(body.fullName);
-    const email          = sanitize(body.email);
-    const phone          = sanitize(body.phone);
-    const childAge       = sanitize(body.childAge);
-    const programInterest = sanitize(body.programInterest);
-    const parentName     = sanitize(body.parentName);
-    const message        = sanitize(body.message || body.notes || '');
+    const name        = sanitize(body.name);
+    const phone       = sanitize(body.phone);
+    const email       = sanitize(body.email);
+    const childAge    = sanitize(body.childAge);
+    const homeAddress = sanitize(body.homeAddress);
 
     // ── Validate required fields ────────────────────────────────────────
     const errors = {};
-    if (!fullName)                   errors.fullName = 'Full name is required';
-    if (!email)                      errors.email    = 'Email is required';
-    else if (!isValidEmail(email))   errors.email    = 'Invalid email address';
-    if (!phone)                      errors.phone    = 'Phone number is required';
-    else if (!isValidPhone(phone))   errors.phone    = 'Invalid phone number';
+    if (!name)                       errors.name        = 'Full name is required';
+    if (!phone)                      errors.phone       = 'Phone number is required';
+    else if (!isValidPhone(phone))   errors.phone       = 'Invalid phone number';
+    if (!email)                      errors.email       = 'Email address is required';
+    else if (!isValidEmail(email))   errors.email       = 'Invalid email address';
+    if (!childAge)                   errors.childAge    = "Child's age is required";
+    if (!homeAddress)                errors.homeAddress = 'Home address is required';
 
     if (Object.keys(errors).length > 0) {
       return res.status(400).json({ error: 'Validation failed', errors });
@@ -102,27 +104,25 @@ export default async function handler(req, res) {
     });
 
     const emailData = {
-      fullName,
-      email,
+      name,
       phone,
-      childAge: childAge || 'Not provided',
-      programInterest: programInterest || 'Not specified',
-      parentName: parentName || 'Not provided',
-      message,
+      email,
+      childAge,
+      homeAddress,
       timestamp,
     };
 
     // ── Send emails via Resend ──────────────────────────────────────────
     const resend = new Resend(process.env.RESEND_API_KEY);
 
-    const toEmail   = process.env.TO_EMAIL   || 'josephchiganu@gmail.com';
-    const fromEmail = process.env.FROM_EMAIL  || 'onboarding@resend.dev';
+    const toEmail   = process.env.TO_EMAIL   || 'croccityfainfo@gmail.com';
+    const fromEmail = process.env.FROM_EMAIL || 'onboarding@resend.dev';
 
     // Admin notification email
     const adminResult = await resend.emails.send({
       from: `Croc City Academy <${fromEmail}>`,
       to: [toEmail],
-      subject: `New Football Academy Registration - ${fullName}`,
+      subject: `New Enquiry — ${name}`,
       html: buildAdminEmail(emailData),
     });
 
@@ -131,12 +131,12 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: 'Failed to send notification email. Please try again.' });
     }
 
-    // Confirmation email to applicant (best-effort, don't fail the whole request)
+    // Confirmation email to applicant (best-effort — don't fail the whole request)
     try {
       await resend.emails.send({
         from: `Croc City Academy <${fromEmail}>`,
         to: [email],
-        subject: 'Welcome to Croc City Football Academy! 🐊',
+        subject: 'Thank you for your enquiry — Croc City Football Academy 🐊',
         html: buildConfirmationEmail(emailData),
       });
     } catch (confirmErr) {
