@@ -208,7 +208,7 @@ export default function RegistrationModal({ isOpen, onClose }) {
                     disabled={isSubmitting}
                     placeholder="e.g. Surname, First Name and Middle Name"
                     autoComplete="name"
-                    className={inputCls(touched.name && errors.name)}
+                    className={inputCls(touched.name && errors.name, 'text-[11px] sm:text-sm')}
                   />
                 </Field>
 
@@ -411,12 +411,12 @@ function Field({ id, label, error, icon, children }) {
 }
 
 /** Dynamic input classes */
-function inputCls(hasError) {
+function inputCls(hasError, customFont = 'text-sm') {
   const base =
-    'w-full bg-neutral-dark border rounded-lg py-3 pl-10 pr-4 text-white text-sm placeholder-white/25 focus:outline-none transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed';
+    'w-full bg-neutral-dark border rounded-lg py-3 pl-10 pr-4 text-white placeholder-white/25 focus:outline-none transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed';
   return hasError
-    ? `${base} border-red-500/60 focus:border-red-400`
-    : `${base} border-white/10 focus:border-brand-orange`;
+    ? `${base} border-red-500/60 focus:border-red-400 ${customFont}`
+    : `${base} border-white/10 focus:border-brand-orange ${customFont}`;
 }
 
 /** Confetti burst in academy colours */
