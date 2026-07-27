@@ -206,7 +206,7 @@ export default function RegistrationModal({ isOpen, onClose }) {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     disabled={isSubmitting}
-                    placeholder="e.g. Adebayo John Musa"
+                    placeholder="e.g. Surname, First Name and Middle Name"
                     autoComplete="name"
                     className={inputCls(touched.name && errors.name)}
                   />
