@@ -11,15 +11,15 @@ const phoneRegex = /^\+?[\d\s\-()]{8,20}$/;
 
 function validate(fields) {
   const errors = {};
-  if (!fields.name.trim())            errors.name        = 'Full name is required';
-  if (!fields.phone.trim())           errors.phone       = 'Phone number is required';
-  else if (!phoneRegex.test(fields.phone)) errors.phone  = 'Enter a valid phone number';
-  if (!fields.email.trim())           errors.email       = 'Email address is required';
-  else if (!emailRegex.test(fields.email)) errors.email  = 'Enter a valid email address';
-  if (!fields.childAge.trim())        errors.childAge    = "Child's age is required";
+  if (!fields.name.trim()) errors.name = 'Full name is required';
+  if (!fields.phone.trim()) errors.phone = 'Phone number is required';
+  else if (!phoneRegex.test(fields.phone)) errors.phone = 'Enter a valid phone number';
+  if (!fields.email.trim()) errors.email = 'Email address is required';
+  else if (!emailRegex.test(fields.email)) errors.email = 'Enter a valid email address';
+  if (!fields.childAge.trim()) errors.childAge = "Child's age is required";
   else if (isNaN(Number(fields.childAge)) || Number(fields.childAge) < 1 || Number(fields.childAge) > 25)
     errors.childAge = 'Please enter a valid age (1–25)';
-  if (!fields.homeAddress.trim())     errors.homeAddress = 'Home address is required';
+  if (!fields.homeAddress.trim()) errors.homeAddress = 'Home address is required';
   return errors;
 }
 
@@ -102,12 +102,12 @@ export default function RegistrationModal({ isOpen, onClose }) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name:        formData.name,
-          phone:       formData.phone,
-          email:       formData.email,
-          childAge:    formData.childAge,
+          name: formData.name,
+          phone: formData.phone,
+          email: formData.email,
+          childAge: formData.childAge,
           homeAddress: formData.homeAddress,
-          website:     formData.website, // honeypot
+          website: formData.website, // honeypot
         }),
       });
 
@@ -206,7 +206,7 @@ export default function RegistrationModal({ isOpen, onClose }) {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     disabled={isSubmitting}
-                    placeholder="e.g. John Adebayo"
+                    placeholder="e.g. Adebayo John Musa"
                     autoComplete="name"
                     className={inputCls(touched.name && errors.name)}
                   />
