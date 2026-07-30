@@ -76,21 +76,21 @@ export default async function handler(req, res) {
     }
 
     // ── Extract & sanitize ──────────────────────────────────────────────
-    const name        = sanitize(body.name);
-    const phone       = sanitize(body.phone);
-    const email       = sanitize(body.email);
-    const childAge    = sanitize(body.childAge);
+    const name = sanitize(body.name);
+    const phone = sanitize(body.phone);
+    const email = sanitize(body.email);
+    const childAge = sanitize(body.childAge);
     const homeAddress = sanitize(body.homeAddress);
 
     // ── Validate required fields ────────────────────────────────────────
     const errors = {};
-    if (!name)                       errors.name        = 'Full name is required';
-    if (!phone)                      errors.phone       = 'Phone number is required';
-    else if (!isValidPhone(phone))   errors.phone       = 'Invalid phone number';
-    if (!email)                      errors.email       = 'Email address is required';
-    else if (!isValidEmail(email))   errors.email       = 'Invalid email address';
-    if (!childAge)                   errors.childAge    = "Child's age is required";
-    if (!homeAddress)                errors.homeAddress = 'Home address is required';
+    if (!name) errors.name = 'Full name is required';
+    if (!phone) errors.phone = 'Phone number is required';
+    else if (!isValidPhone(phone)) errors.phone = 'Invalid phone number';
+    if (!email) errors.email = 'Email address is required';
+    else if (!isValidEmail(email)) errors.email = 'Invalid email address';
+    if (!childAge) errors.childAge = "Child's age is required";
+    if (!homeAddress) errors.homeAddress = 'Home address is required';
 
     if (Object.keys(errors).length > 0) {
       return res.status(400).json({ error: 'Validation failed', errors });
@@ -115,8 +115,8 @@ export default async function handler(req, res) {
     // ── Send emails via Resend ──────────────────────────────────────────
     const resend = new Resend(process.env.RESEND_API_KEY);
 
-    const toEmail   = process.env.TO_EMAIL   || 'croccityfainfo@gmail.com';
-    const fromEmail = process.env.FROM_EMAIL || 'onboarding@resend.dev';
+    const toEmail = process.env.TO_EMAIL || 'croccityfainfo@gmail.com';
+    const fromEmail = process.env.FROM_EMAIL || 'contact@croccityfootballacademy.com';
 
     // Admin notification email
     const adminResult = await resend.emails.send({
